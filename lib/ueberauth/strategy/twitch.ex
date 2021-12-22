@@ -125,14 +125,12 @@ defmodule Ueberauth.Strategy.Twitch do
       twitch_token: :token,
       twitch_user: :user
     }
-    |> Enum.filter_map(
-      fn {original_key, _} ->
-        Map.has_key?(conn.private, original_key)
-      end,
-      fn {original_key, mapped_key} ->
-        {mapped_key, Map.fetch!(conn.private, original_key)}
-      end
-    )
+    |> Enum.filter(fn {original_key, _} ->
+      Map.has_key?(conn.private, original_key)
+    end)
+    |> Enum.map(fn {original_key, mapped_key} ->
+      {mapped_key, Map.fetch!(conn.private, original_key)}
+    end)
     |> Map.new()
     |> (&%Extra{raw_info: &1}).()
   end
@@ -150,7 +148,7 @@ defmodule Ueberauth.Strategy.Twitch do
   end
 
   defp option(conn, key) do
-    Dict.get(options(conn), key, Dict.get(default_options(), key))
+    Keyword.get(options(conn), key, Keyword.get(default_options(), key))
   end
 
   defp parse_user_from_response(raw_user) do
