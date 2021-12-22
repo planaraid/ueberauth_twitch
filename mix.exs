@@ -1,8 +1,8 @@
 defmodule UeberauthTwitch.Mixfile do
   use Mix.Project
 
-  @version "0.1.0"
-  @url "https://github.com/dionridley/ueberauth_twitch"
+  @version "0.2.0"
+  @url "https://github.com/planaraid/ueberauth_twitch"
 
   def project do
     [
